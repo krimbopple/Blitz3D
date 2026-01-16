@@ -62,12 +62,15 @@ void	 bbCls();
 void	 bbPlot( int x,int y );
 void	 bbLine( int x1,int y1,int x2,int y2 );
 void	 bbRect( int x,int y,int w,int h,int solid );
+void	 bbAlphaRect(int x, int y, int w, int h, int solid);
+void	 bbRoundedRect(int x, int y, int w, int h, int radius, int solid);
 void	 bbOval( int x,int y,int w,int h,int solid );
 void	 bbText( int x,int y,BBStr *str,int centre_x,int centre_y );
 void	 bbGetColor( int x,int y );
 int		 bbColorRed();
 int		 bbColorGreen();
 int		 bbColorBlue();
+int		 bbColorAlpha();
 
 //font functions
 gxFont * bbLoadFont( BBStr *name,int height );

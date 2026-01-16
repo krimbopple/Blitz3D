@@ -1315,7 +1315,7 @@ void graphics_link( void (*rtSym)( const char *sym,void *pc ) ){
 	//rendering
 	rtSym( "Origin%x%y",bbOrigin );
 	rtSym( "Viewport%x%y%width%height",bbViewport );
-	rtSym( "Color%red%green%blue",bbColor );
+	rtSym( "Color%red%green%blue%alpha=255", bbColor);
 	rtSym( "GetColor%x%y",bbGetColor );
 	rtSym( "%ColorRed",bbColorRed );
 	rtSym( "%ColorGreen",bbColorGreen );
@@ -1325,6 +1325,9 @@ void graphics_link( void (*rtSym)( const char *sym,void *pc ) ){
 	rtSym( "Cls",bbCls );
 	rtSym( "Plot%x%y",bbPlot );
 	rtSym( "Rect%x%y%width%height%solid=1",bbRect );
+	rtSym( "AlphaRect%x%y%width%height%solid=1", bbAlphaRect);
+	rtSym( "RectGlow%x%y%width%height%thickness", bbRectGlow);
+	rtSym( "RoundedRect%x%y%width%height%radius%solid=1", bbRoundedRect);
 	rtSym( "Oval%x%y%width%height%solid=1",bbOval );
 	rtSym( "Line%x1%y1%x2%y2",bbLine );
 	rtSym( "Text%x%y$text%centre_x=0%centre_y=0",bbText );
