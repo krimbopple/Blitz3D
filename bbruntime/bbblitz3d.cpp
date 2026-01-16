@@ -15,6 +15,8 @@
 #include "../blitz3d/loader_x.h"
 #include "../blitz3d/loader_3ds.h"
 #include "../blitz3d/loader_b3d.h"
+#include "../blitz3d/loader_obj.h" 
+#include "../blitz3d/loader_gltf.h"
 #include "../blitz3d/md2model.h"
 #include "../blitz3d/q3bspmodel.h"
 #include "../blitz3d/meshutil.h"
@@ -54,6 +56,8 @@ extern float stats3d[10];
 static Loader_X loader_x;
 static Loader_3DS loader_3ds;
 static Loader_B3D loader_b3d;
+static Loader_OBJ loader_obj;
+static Loader_GLTF loader_gltf;
 
 static map<string,Transform> loader_mat_map;
 
@@ -152,9 +156,11 @@ static Entity *loadEntity( string t,int hint ){
 	string ext=t.substr( n+1 );
 	MeshLoader *l;
 
-	if( ext=="x" ) l=&loader_x;
-	else if( ext=="3ds" ) l=&loader_3ds;
-	else if( ext=="b3d" ) l=&loader_b3d;
+	if (ext == "x") l = &loader_x;
+	else if (ext == "3ds") l = &loader_3ds;
+	else if (ext == "b3d") l = &loader_b3d;
+	else if (ext == "obj") l = &loader_obj;
+	else if (ext == "gltf" || ext == "glb") l = &loader_gltf;
 	else return 0;
 
 	const Transform &conv=loader_mat_map[ext];
