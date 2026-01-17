@@ -250,7 +250,7 @@ void VectorDeclNode::proto( DeclSeq *d,Environ *env ){
 		if( !c ) ex( "Blitz array sizes must be constant" );
 		int n=c->intValue();
 		if( n<0 ) ex( "Blitz array sizes must not be negative" );
-		sizes.push_back( n );
+		sizes.push_back( n+1 );
 	}
 	string label=genLabel();
 	sem_type=d_new VectorType( label,ty,sizes );
