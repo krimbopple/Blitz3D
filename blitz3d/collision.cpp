@@ -399,7 +399,7 @@ bool Collision::capsuleCollide(const Line& line, float radius, const Vector& a, 
 	Vector delta = line.o + line.d * t - closest_point;
 	float dist_sq = delta.dot(delta);
 
-	if (dist_sq > total_radius * total_radius + EPSILON) return false;
+	if (dist_sq > total_radius * total_radius + COLLISION_EPSILON) return false;
 
 	return update(line, t, delta.normalized());
 }
