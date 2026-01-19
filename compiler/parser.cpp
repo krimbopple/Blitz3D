@@ -2,6 +2,9 @@
 #include "std.h"
 #include <cstdlib>
 #include "parser.h"
+#include <sstream>
+#include <fstream>
+#include "preprocessor.h"
 
 static const int TEXTLIMIT=1024*1024-1;
 
@@ -14,7 +17,13 @@ static bool isTerm( int c ){ return c==':' || c=='\n'; }
 Parser::Parser( Toker &t ):toker(&t),main_toker(&t){
 }
 
-ProgNode *Parser::parse(const string &main, bool debug){
+ProgNode* Parser::parse(const string& main, bool debug) {
+	Preprocessor pp;
+	string processedContent = pp.process(main, debug);
+
+	istringstream processedStream(processedContent);
+	Toker processedToker(processedStream);
+	toker = &processedToker;
 
 	incfile=main;
 

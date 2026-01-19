@@ -197,6 +197,30 @@ void Toker::nextline(){
 			tokes.push_back( Toke( STRINGCONST,from,k ) );
 			continue;
 		}
+		if (c == '_' && line[k + 1] == '#') { // note to self, don't get rid of the _ because shit with #'s will think theyre directives
+			int start = k;
+			k += 2;
+
+			while (isspace(line[k])) ++k;
+
+			int dir_start = k;
+			while (isalpha(line[k]) || line[k] == '_') ++k;
+			string directive = tolower(line.substr(dir_start, k - dir_start));
+
+			if (directive == "define" || directive == "if" || directive == "elif" ||
+				directive == "else" || directive == "endif" || directive == "undef" ||
+				directive == "ifdef" || directive == "ifndef" ||
+				directive == "include" || directive == "error" || directive == "warning") {
+
+				while (line[k] != '\n') ++k;
+
+				tokes.push_back(Toke(PP_DIRECTIVE, from, k));
+				continue;
+			}
+			else {
+				k = start;
+			}
+		}
 		int n=line[k+1];
 		if( (c=='<'&&n=='>')||(c=='>'&&n=='<') ){
 			tokes.push_back( Toke( NE,from,k+=2 ) );
