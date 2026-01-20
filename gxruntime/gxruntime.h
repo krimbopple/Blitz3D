@@ -103,7 +103,7 @@ public:
 
 	void debugStop();
 	void debugProfile( int per );
-	void debugStmt( int pos,const char *file );
+	bool debugStmt(int pos, const char* file);
 	void debugEnter( void *frame,void *env,const char *func );
 	void debugLeave();
 	void debugInfo( const char *t );
