@@ -6,7 +6,7 @@
 extern gxRuntime *gx_runtime;
 
 gxGraphics::gxGraphics( gxRuntime *rt,IDirectDraw7 *dd,IDirectDrawSurface7 *fs,IDirectDrawSurface7 *bs,bool d3d ):
-runtime(rt),dirDraw(dd),dir3d(0),dir3dDev(0),def_font(0),gfx_lost(false),dummy_mesh(0){
+runtime(rt),dirDraw(dd),dir3d(0),dir3dDev(0),gfx_lost(false),dummy_mesh(0){
 
 	dirDraw->QueryInterface( IID_IDirectDraw,(void**)&ds_dirDraw );
 
@@ -18,11 +18,8 @@ runtime(rt),dirDraw(dd),dir3d(0),dir3dDev(0),def_font(0),gfx_lost(false),dummy_m
 
 	FT_Init_FreeType(&ftLibrary);
 
-	def_font = nullptr;
-	//def_font=loadFont( "courier",12,0 );
-
-	front_canvas->setFont( def_font );
-	back_canvas->setFont( def_font );
+	front_canvas->setFont(nullptr);
+	back_canvas->setFont(nullptr);
 
 	memset(&primFmt,0,sizeof(primFmt));
 	primFmt.dwSize=sizeof(primFmt);
@@ -121,10 +118,6 @@ gxCanvas *gxGraphics::getFrontCanvas()const{
 
 gxCanvas *gxGraphics::getBackCanvas()const{
 	return back_canvas;
-}
-
-gxFont *gxGraphics::getDefaultFont()const{
-	return def_font;
 }
 
 void gxGraphics::vwait(){
@@ -236,16 +229,6 @@ int gxGraphics::getDepth()const{
 }
 
 gxFont *gxGraphics::loadFont(const string &f,int height) {
-	string t;
-	int n=f.find('.');
-	if( n!=string::npos ){
-		t=fullfilename(f);
-		if( !font_res.count(t) && AddFontResource( t.c_str() ) ) font_res.insert( t );
-		t=filenamefile( f.substr(0,n) );
-	}else{
-		t=f;
-	}
-
 	gxFont* newFont = new gxFont(ftLibrary, this, f, height);
 	font_set.emplace(newFont);
 	return newFont;

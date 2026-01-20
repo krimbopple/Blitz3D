@@ -149,7 +149,7 @@ t_surf(0),cm_mask(0),locked_cnt(0),mod_cnt(0),remip_cnt(0){
 	setClsColor( 0 );
 	setOrigin( 0,0 );
 	setHandle( 0,0 );
-	setFont( graphics->getDefaultFont() );
+	setFont(nullptr);
 	setViewport( 0,0,getWidth(),getHeight() );
 	if( flags & gxCanvas::CANVAS_TEXTURE ) ddUtil::buildMipMaps( surf );
 }

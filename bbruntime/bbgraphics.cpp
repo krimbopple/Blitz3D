@@ -377,7 +377,7 @@ static void graphics( int w,int h,int d,int flags ){
 	}
 	curr_clsColor=0;
 	curr_color=0xffffffff;
-	curr_font=gx_graphics->getDefaultFont();
+	curr_font = nullptr;
 	gxCanvas *buff=(flags & gxGraphics::GRAPHICS_3D) ?
 		gx_graphics->getBackCanvas() : gx_graphics->getFrontCanvas();
 	bbSetBuffer( buff );
@@ -425,7 +425,7 @@ void bbEndGraphics(){
 	if( gx_graphics ){
 		curr_clsColor=0;
 		curr_color=0xffffffff;
-		curr_font=gx_graphics->getDefaultFont();
+		curr_font = nullptr;
 		bbSetBuffer( gx_graphics->getFrontCanvas() );
 		return;
 	}
@@ -661,7 +661,7 @@ gxFont *bbLoadFont( BBStr *name, int height ){
 
 void bbFreeFont( gxFont *f ){
 	debugFont( f );
-	if( f==curr_font ) bbSetFont( gx_graphics->getDefaultFont() );
+	if( f==curr_font ) bbSetFont(nullptr);
 	gx_graphics->freeFont( f );
 }
 
@@ -1229,7 +1229,7 @@ bool graphics_create(){
 	if( gx_graphics ){
 		curr_clsColor=0;
 		curr_color=0xffffffff;
-		curr_font=gx_graphics->getDefaultFont();
+		curr_font = nullptr;
 		bbSetBuffer( bbFrontBuffer() );
 		return true;
 	}
