@@ -241,17 +241,26 @@ int _cdecl main( int argc,char *argv[] ){
 
 	try{
 		//parse
-		if( !veryquiet ) cout<<"Parsing..."<<endl;
+		if (!veryquiet) {
+			cout << "Parsing..." << endl;
+			cout.flush();
+		}
 		Toker toker( in );
 		Parser parser( toker );
 		prog=parser.parse(in_file, debug);
 
 		//semant
-		if( !veryquiet ) cout<<"Generating..."<<endl;
+		if (!veryquiet) {
+			cout << "Generating..." << endl;
+			cout.flush();
+		}
 		environ=prog->semant( runtimeEnviron );
 
 		//translate
-		if( !veryquiet ) cout<<"Translating..."<<endl;
+		if (!veryquiet) {
+			cout << "Translating..." << endl;
+			cout.flush();
+		}
 		qstreambuf qbuf;
 		iostream asmcode( &qbuf );
 		Codegen_x86 codegen( asmcode,debug );
@@ -263,16 +272,46 @@ int _cdecl main( int argc,char *argv[] ){
 		}
 
 		//assemble
-		if( !veryquiet ) cout<<"Assembling..."<<endl;
+		if (!veryquiet) {
+			cout << "Assembling..." << endl;
+			cout.flush();
+		}
 		module=linkerLib->createModule();
 		Assem_x86 assem( asmcode,module );
 		assem.assemble();
 
-	}catch( Ex &x ){
+	}
+	catch (Ex& x) {
 
-		string file='\"'+x.file+'\"';
-		int row=((x.pos>>16)&65535)+1,col=(x.pos&65535)+1;
-		cout<<file<<":"<<row<<":"<<col<<":"<<row<<":"<<col<<":"<<x.ex<<endl;
+		string file = '\"' + x.file + '\"';
+		int row = ((x.pos >> 16) & 65535) + 1, col = (x.pos & 65535) + 1;
+
+		cout << "COMPILE ERROR in " << file << " at line " << row << ", column " << col << ":" << endl;
+		cout << "  " << x.ex << endl;
+
+		if (!x.file.empty()) {
+			ifstream errFile(x.file.c_str());
+			if (errFile) {
+				string line;
+				for (int i = 0; i < row && getline(errFile, line); i++) {
+					if (i == row - 1) {
+						cout << "  " << line << endl;
+						cout << "  ";
+						for (int j = 0; j < col - 1; j++) {
+							if (j < line.length() && line[j] == '\t') {
+								cout << "\t";
+							}
+							else {
+								cout << " ";
+							}
+						}
+						cout << "^" << endl;
+					}
+				}
+				errFile.close();
+			}
+		}
+
 		exit(-1);
 	}
 

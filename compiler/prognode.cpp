@@ -79,7 +79,28 @@ void ProgNode::translate( Codegen *g,const vector<UserFunc> &usrfuncs ){
 	g->leave( t,0 );
 
 	//structs
-	structs->translate( g );
+	//cout << "DEBUG: starting structs translation" << endl;
+	//cout << "DEBUG: structs pointer: " << structs << endl;
+	//if (structs) {
+		//cout << "DEBUG: structs size: " << structs->size() << endl;
+	//}
+	//cout.flush();
+
+	try {
+		structs->translate(g);
+		//cout << "DEBUG: finished structs translation" << endl;
+		//cout.flush();
+	}
+	catch (Ex& x) {
+		//cout << "DEBUG: exception in structs translation: " << x.ex << endl;
+		//cout.flush();
+		throw;
+	}
+	catch (...) {
+		//cout << "DEBUG: unknown exception in structs translation" << endl;
+		//cout.flush();
+		throw Ex("Unknown exception during structs translation");
+	}
 
 	//non-main functions
 	funcs->translate( g );

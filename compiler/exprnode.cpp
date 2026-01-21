@@ -236,17 +236,17 @@ TNode* NullConstNode::translate(Codegen* g) {
 }
 
 int NullConstNode::intValue() {
-	ex("Can't convert null to int");
+	//ex("Can't convert null to int");
 	return 0;
 }
 
 float NullConstNode::floatValue() {
-	ex("Can't convert null to float");
-	return 0.f;
+	//ex("Can't convert null to float");
+	return 0.0f;
 }
 
 string NullConstNode::stringValue() {
-	ex("Can't convert null to string");
+	//ex("Can't convert null to string");
 	return string("");
 }
 
