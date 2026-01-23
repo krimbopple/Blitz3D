@@ -2,8 +2,8 @@
 #include "std.h"
 #include "environ.h"
 
-Environ::Environ( const string &f,Type *r,int l,Environ *gs )
-:funcLabel(f),returnType(r),level(l),globals(gs){
+Environ::Environ( const string &f,Type *r,int l,Environ *gs,bool strict)
+:funcLabel(f),returnType(r),level(l),globals(gs),strictMode(strict){
 	decls=d_new DeclSeq();
 	typeDecls=d_new DeclSeq();
 	funcDecls=d_new DeclSeq();

@@ -167,7 +167,7 @@ void FuncDeclNode::proto( DeclSeq *d,Environ *e ){
 
 void FuncDeclNode::semant( Environ *e ){
 
-	sem_env=d_new Environ( genLabel(),sem_type->returnType,1,e );
+	sem_env = d_new Environ(genLabel(), sem_type->returnType, 1, e, e->strictMode);
 	DeclSeq *decls=sem_env->decls;
 
 	int k;

@@ -14,9 +14,6 @@ enum{
 
 static bool isTerm( int c ){ return c==':' || c=='\n'; }
 
-Parser::Parser( Toker &t ):toker(&t),main_toker(&t){
-}
-
 ProgNode* Parser::parse(const string& main, bool debug) {
 	Preprocessor pp;
 	string processedContent = pp.process(main, debug);
@@ -41,7 +38,7 @@ ProgNode* Parser::parse(const string& main, bool debug) {
 		throw;
 	}
 
-	return d_new ProgNode( consts,structs,funcs,datas,stmts );
+	return d_new ProgNode(consts, structs, funcs, datas, stmts, strictMode);
 }
 
 void Parser::ex( const string &s ){

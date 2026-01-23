@@ -14,11 +14,15 @@
 class Parser{
 public:
 
-	Parser( Toker &t );
+	Parser(Toker& t, bool strict = false)
+		: toker(&t), main_toker(&t), strictMode(strict) {
+	}
 
 	ProgNode *parse( const string &main , bool debug );
 
 private:
+	bool strictMode; // for auto decls
+
 	string incfile;
 	set<string> included;
 	Toker *toker,*main_toker;

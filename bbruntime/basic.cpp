@@ -251,7 +251,10 @@ BBObj *_bbObjNew(BBObjType *type) {
 	o->ref_cnt=1;
 	o->fields=(BBField*)(o+1);
 
-	BBField* initialValues = (BBField*)(type->fieldTypes + type->fieldCnt);
+	// set all to 0 or else blitz shits itself
+	for (int k = 0; k < type->fieldCnt; ++k) {
+		o->fields[k].INT = 0;
+	}
 
 	for (int k = 0; k < type->fieldCnt; ++k) {
 		switch (type->fieldTypes[k]->type) {
@@ -259,23 +262,37 @@ BBObj *_bbObjNew(BBObjType *type) {
 			o->fields[k].VEC = _bbVecAlloc((BBVecType*)type->fieldTypes[k]);
 			break;
 		case BBTYPE_STR:
-			// TODO: get this shit working
-			o->fields[k].STR = 0;
 			break;
-
-			//if (initialValues[k].STR) {
-			//	o->fields[k].STR = d_new BBStr(initialValues[k].CSTR);
-			//}
-			//else {
-			//	o->fields[k].STR = 0;
-			//}
-			//break;
 		case BBTYPE_OBJ:
-			o->fields[k].OBJ = initialValues[k].OBJ;
-			if (o->fields[k].OBJ) ++o->fields[k].OBJ->ref_cnt;
 			break;
-		default:
-			o->fields[k] = initialValues[k];
+		}
+	}
+
+	BBField* initialValues = (BBField*)(type->fieldTypes + type->fieldCnt);
+
+	for (int k = 0; k < type->fieldCnt; ++k) {
+		switch (type->fieldTypes[k]->type) {
+		case BBTYPE_INT:
+			if (initialValues[k].INT != 0) {
+				o->fields[k].INT = initialValues[k].INT;
+			}
+			break;
+		case BBTYPE_FLT:
+			if (initialValues[k].FLT != 0.0f) {
+				o->fields[k].FLT = initialValues[k].FLT;
+			}
+			break;
+		case BBTYPE_STR:
+			if (initialValues[k].CSTR) {
+				o->fields[k].STR = d_new BBStr(initialValues[k].CSTR);
+			}
+			break;
+		case BBTYPE_OBJ:
+			if (initialValues[k].OBJ) {
+				o->fields[k].OBJ = initialValues[k].OBJ;
+				++o->fields[k].OBJ->ref_cnt;
+			}
+			break;
 		}
 	}
 	insertObj(o,&type->used);

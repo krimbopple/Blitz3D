@@ -143,7 +143,7 @@ int _cdecl main( int argc,char *argv[] ){
 
 	bool debug=false,quiet=false,veryquiet=false,compileonly=false;
 	bool dumpkeys=false,dumphelp=false,showhelp=false,dumpasm=false;
-	bool versinfo=false;
+	bool versinfo=false; bool strictMode = true;
 
 	for( int k=1;k<argc;++k ){
 
@@ -153,6 +153,9 @@ int _cdecl main( int argc,char *argv[] ){
 
 		if( t=="-h" ){
 			showhelp=true;
+		}
+		else if (t == "-nostrict") {
+			strictMode = false; // btw this is for auto decls
 		}else if( t=="-a" ){
 			dumpasm=true;
 		}else if( t=="-q" ){
@@ -246,7 +249,7 @@ int _cdecl main( int argc,char *argv[] ){
 			cout.flush();
 		}
 		Toker toker( in );
-		Parser parser( toker );
+		Parser parser(toker, strictMode);
 		prog=parser.parse(in_file, debug);
 
 		//semant

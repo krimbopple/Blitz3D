@@ -12,6 +12,7 @@ struct UserFunc{
 };
 
 struct ProgNode : public Node{
+	bool strictMode; // for auto decls
 
 	DeclSeqNode *consts;
 	DeclSeqNode *structs;
@@ -23,7 +24,7 @@ struct ProgNode : public Node{
 
 	string file_lab;
 
-	ProgNode( DeclSeqNode *c,DeclSeqNode *s,DeclSeqNode *f,DeclSeqNode *d,StmtSeqNode *ss ):consts(c),structs(s),funcs(f),datas(d),stmts(ss){}
+	ProgNode(DeclSeqNode* c, DeclSeqNode* s, DeclSeqNode* f, DeclSeqNode* d, StmtSeqNode* ss, bool strict = false): consts(c), structs(s), funcs(f), datas(d), stmts(ss), strictMode(strict) {}
 	~ProgNode(){ 
 		delete consts;
 		delete structs;
